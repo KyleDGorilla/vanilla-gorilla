@@ -120,7 +120,7 @@ This project is created and maintained for **educational and portfolio demonstra
 
 ## Contact
 
-**Kyle Gordon**  
+**Kyle Dahgon**  
 Solutions Architect  
 [GitHub](https://github.com/KyleDGorilla) | [Architecture Portfolio](https://github.com/KyleDGorilla/architecture-portfolio)
 

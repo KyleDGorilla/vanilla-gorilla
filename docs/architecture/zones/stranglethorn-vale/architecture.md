@@ -167,7 +167,7 @@ creature (spawn instances)
 ## Next Steps
 
 
-### Phase 1C: Gameobject Analysis (Upcoming)
+### Phase 1C: Gameobject Analysis (In Progress)
 - Identify interactive objects in zone
 - Analyze gameobject_template relationships
 - Document resource nodes (herbs, ore, chests)

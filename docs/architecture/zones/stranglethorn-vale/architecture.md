@@ -117,13 +117,55 @@ creature (spawn instances)
 
 ---
 
+### Phase 1B: Creature Distribution Analysis ✅
+**Completed**: January 26, 2026
+
+**Objective**: Understand creature population, types, and distribution patterns.
+
+**Key Findings**:
+
+1. **Zone Boundary Overlap Discovered**
+   - Initial coordinate range (-14600 to -10300 X, -4200 to 1600 Y) captures multiple zones
+   - Nethergarde creatures (Blasted Lands) clustered at X: -10970 to -10477, Y: -3693 to -3047
+   - Demon creatures (Blasted Lands) present in results
+   - Foe Reaper 4000 (Westfall) appears in rare spawn list
+   
+   **Refined Boundaries Proposed**:
+   - X: -14600 to -10900 (exclude Blasted Lands overlap)
+   - Y: -4200 to -2900 (exclude southern border overlap)
+
+2. **Diverse Spawn Strategy**
+   - No single creature type dominates
+   - Most common types have 20-50 spawn instances
+   - Contrast with starter zones (might have 300+ of same wolf type)
+   - Indicates multiple sub-zones with different themes
+
+3. **Elite Distribution Pattern**
+   - **Rank 0 (Normal)**: 20-155 spawns per type, distributed throughout
+   - **Rank 1 (Elite)**: 1-19 spawns per type, specific locations
+   - **Rank 2 (Rare Elite)**: 4-9 spawns, special encounters
+   - **Rank 3 (World Boss)**: 1 spawn, roaming
+   - **Rank 4 (Rare Elite Boss)**: 1-18 spawns, mostly adjacent zones
+   
+   **Architectural Principle**: Rarity inversely correlates with spawn density
+
+4. **Creature Template Relationship**
+   - `creature.id1` → `creature_template.entry` (type system)
+   - creature = spawn instance, creature_template = type definition
+   - One template can have many spawn instances
+   - Example: "Stranglethorn Tigress" template (entry 772) has 52 spawn instances
+
+**Implications for Port Gurubashi**:
+- Elite guard NPCs should use rank 1 with 5-10 spawns (not high density)
+- Coordinate-based queries will need careful boundary definition
+- Custom content coordinates must avoid overlap with existing dense spawn areas
+
+**Artifacts**:
+- [Creature Analysis Queries](queries/02-creature-analysis.sql)
+
+
 ## Next Steps
 
-### Phase 1B: Creature Analysis (In Progress)
-- Analyze creature distribution patterns
-- Document creature_template relationships
-- Identify spawn group usage
-- Count creatures by type/level
 
 ### Phase 1C: Gameobject Analysis (Upcoming)
 - Identify interactive objects in zone

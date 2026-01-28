@@ -2,7 +2,7 @@
 
 **Status**: Data Layer Analysis - In Progress  
 **Started**: January 26, 2026  
-**Last Updated**: January 26, 2026
+**Last Updated**: January 27, 2026
 
 ## Zone Definition
 
@@ -252,15 +252,151 @@ creature (spawn instances)
 ## Next Steps
 
 
-### Phase 1D: Quest Analysis (Upcoming)
-- Identify quests in or related to STV
-- Document quest chains and dependencies
+### Phase 1D: Quest Analysis ✅
+**Completed**: January 27, 2026
+
+**Objective**: Analyze quest distribution, difficulty types, level progression, and relationships to creatures and gameobjects.
+
+**Key Findings**:
+
+1. **Quest Population**: 210 total quests
+   - Leveling quests (28-45): ~140 quests (67%)
+   - Raid quests (58-60): 57 quests (27%)
+   - Event/Seasonal: 13 quests (6%)
+   - **Ratio**: 1 quest per 7.5 creatures, 1 quest per 9.4 gameobjects
+
+2. **Dual-Purpose Quest Hub**:
+   - **Leveling Hub** (28-45): Serves mid-level players progressing through zone
+   - **Raid Hub** (58-60): Zul'Gurub content brings max-level players back
+   - **Architectural Pattern**: Multi-tier zone design serving different player populations simultaneously
+
+3. **Elite-Focused Difficulty** (Critical Finding):
+   - **Type 0 (Normal)**: 47 quests (22%)
+   - **Type 2 (Elite/Dungeon)**: 128 quests (61%)
+   - **Unusually high elite percentage** compared to typical zones:
+     - Starter zones: ~10% elite
+     - Mid-level zones: ~30% elite
+     - **STV: 61% elite**
+   - **Design Philosophy**: Encourages group play and PvP encounters through high difficulty
+
+4. **Quest Level Progression**:
+   - **Entry level** (28-35): 26 quests (gradual introduction)
+   - **Mid-zone** (30-37): 33 quests (main content)
+   - **Late zone** (35-44): 19 quests (challenging content)
+   - **End-game prep** (37-45): 21 quests (final push before next zones)
+   - **Smooth overlap**: Players can quest continuously from 28 to 45+
+
+5. **Zul'Gurub Raid Integration**:
+   - 57 quests (27% of total) for level 58-60 players
+   - Two quest categories (zone_sort 19, 1977)
+   - Major quest givers:
+     - Jin'rokh the Breaker: 18+ quests (Strength series, Paragons of Power)
+     - Al'tabim the All-Seeing: 12+ quests (Eye of Zuldazar series, caster gear)
+   - Class-specific gear acquisition (Paragons of Power series)
+   - Zandalar Tribe faction reputation system
+
+6. **Iconic Quest Lines**:
+   
+   **Nesingwary Hunting Expedition** (zone_sort 400):
+   - Tiger Mastery series (Ajeck Rouack)
+   - Panther Mastery series (Sir S. J. Erlgadin)
+   - Raptor Mastery series (Hemet Nesingwary Jr.)
+   - Progressive difficulty: levels 31-38
+   - Defines STV identity for many players
+
+   **Booty Bay Hub**:
+   - Supply and Demand, Investigate the Camp
+   - Shipping and trade quests (Krazek, Wharfmaster)
+   - Multiple quest givers create city hub feel
+
+   **Troll Campaigns**:
+   - Bloodscalp tribe quests
+   - Skullsplitter tribe quests
+   - Hunt for Yenniku (Horde-specific)
+
+7. **Faction-Specific Content**:
+   - **Both factions**: ~140 quests (AllowableRaces = 0)
+   - **Alliance-only**: ~35 quests (AllowableRaces = 1101)
+   - **Horde-only**: ~35 quests (AllowableRaces = 690)
+   - Contested zone design with unique faction storylines
+   - Overlapping quest areas encourage PvP encounters
+
+8. **Quest Chain System**:
+   - Uses `RewardNextQuest` for sequential progression
+   - Creates story arcs that unlock gradually
+   - Examples:
+     - Nesingwary hunts: Multi-part hunting achievements
+     - Kurzen compound investigation
+     - Bloodsail pirate storylines
+     - Zandalar Tribe reputation chains
+   - Players progress through zone via interconnected quests
+
+9. **Event Overlay System** (Consistent with creatures/gameobjects):
+   - 13 seasonal quests (QuestLevel = -1)
+   - Fishing tournaments: Master Angler, Apprentice Angler, Rare Fish quests
+   - Holiday events: Winter's Presents, Playing with Fire
+   - Same layered content pattern as event gameobjects (132) and creatures
+   - **Architectural Principle**: Temporary content augments permanent base
+
+10. **Quest Category Distribution** (zone_sort field):
+    - **zone_sort 33**: 105 quests (core STV identifier)
+    - **zone_sort 400**: 5 quests (Nesingwary hunting)
+    - **zone_sort 19, 1977**: 57 quests (Zul'Gurub)
+    - **zone_sort -121, -201, etc.**: Special categories (profession, class, seasonal)
+
+**Quest Giver Relationships**:
+- `creature_queststarter`: Links creatures to quests they offer
+- `creature_questender`: Links creatures to quests they complete
+- Major quest hubs: Booty Bay (multiple NPCs), Nesingwary Camp, Zul'Gurub entrance
+- Some quests return to same NPC, others to different NPCs (creates travel through zone)
+
+**Implications for Port Gurubashi**:
+- Elite difficulty appropriate (matches STV's 61% elite pattern)
+- Sequential quest chains for Victory Coin progression
+- Mix of faction-specific and neutral quests
+- Multiple quest givers in city (not single hub) creates hub feel
+- PvP-oriented objectives fit zone design (kill players, control areas)
+- "Mastery" style progressive quests (arena tiers, riot participation)
+- Event integration for custom celebrations
+- Reward structure should match level 30-45 tier
+
+**Artifacts**:
+- [Quest Analysis Queries](queries/05-quest-analysis.sql)
+
+---
+
+## Data Layer Analysis Complete ✅
+
+**Summary**: All core data entities documented
+- **Zone boundaries**: Coordinate-based identification (X: -14500 to -11500, Y: -1100 to 1300)
+- **Creatures**: 1,572 spawns with diverse distribution and elite patterns
+- **Gameobjects**: 1,979 objects (50% resource nodes) with tiered distribution
+- **Quests**: 210 quests (61% elite difficulty) serving dual leveling/raid purposes
+
+**Entity Relationships Documented**:
+```
+creature ──┬── creature_template (type definitions)
+           ├── creature_queststarter (quest giver)
+           └── creature_questender (quest completer)
+
+gameobject ── gameobject_template (type definitions)
+
+quest_template ──┬── RewardNextQuest (quest chains)
+                 ├── creature_queststarter (given by)
+                 └── creature_questender (completed with)
+```
+
+**Next Phase**: Spatial Layer Analysis (NoggIt terrain/navigation documentation)
 
 ---
 
 ## Queries Saved
 
 - `01-zone-identification.sql` - Zone boundary discovery and verification
+- `02-creature-analysis.sql` - Analysis of creature presence and density
+-	`03-boundary-refinement.sql` - Refined boundaries based on creature presence and density analysis	
+- `04-gameobject-analysis.sql` - Analysis of game object type and density
+- `05-quest-analysis.sql` - Analysis of quest type, level requirement, issuing npcs, and quest structure
 
 ---
 

@@ -32,7 +32,7 @@ Systematic documentation of game world architecture using arc42 methodology, dem
 ### Server Configurations
 Template configurations for AzerothCore deployment (sensitive values removed).
 
-📁 **Configs**: [`/server-configs`](./server-configs)
+📁 **TO BE ADDED** **Configs**: [`/server-configs`](./server-configs)
 
 ## Documentation
 
